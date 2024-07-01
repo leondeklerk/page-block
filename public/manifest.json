@@ -2,7 +2,7 @@
 	"manifest_version": 2,
 	"$schema": "https://json.schemastore.org/chrome-manifest.json",
 	"name": "Page Block",
-	"version": "1",
+	"version": "1.0.1",
 	"author": "Leon de Klerk",
 
 	"description": "A simple extension that allows you to set a list of websites which you can only visit x times in an interval. You can chose a hourly or daily interval, when the limit is reached within that interval the tab will automatically close.",
@@ -24,5 +24,5 @@
 		"persistent": true,
 		"type": "module"
 	},
-	"browser_specific_settings": { "gecko": { "id": "{4fab38e9-c167-4dee-b27b-81ffeee5e7d6}" } }
+	"browser_specific_settings": { "gecko": { "id": "{4fab38e9-c167-4dee-b27b-81ffeee5e7d6}" }, "gecko-android": {} }
 }
