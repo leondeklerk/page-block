@@ -20,6 +20,7 @@
 		"paths": {
 			"@/*": ["./src/*"]
 		},
+		"types": ["@types/firefox-webext-browser"],
 		"preserveValueImports": false,
 		"importsNotUsedAsValues": "remove",
 		"verbatimModuleSyntax": true
