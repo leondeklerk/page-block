@@ -1,7 +1,6 @@
 {
 	"version": { "license": "MIT" },
 	"categories": { "firefox": ["tabs"] },
-	"contributions_url": "https://donate.mozilla.org",
 	"default_locale": "en-US",
 	"requires_payment": false,
 	"description": {
