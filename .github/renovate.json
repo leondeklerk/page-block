@@ -17,18 +17,18 @@
 	},
 	"packageRules": [
 		{
-			"matchPackagePatterns": ["*"],
 			"matchUpdateTypes": ["minor", "patch"],
 			"groupName": "minor dependencies",
 			"groupSlug": "dependencies-minor",
-			"addLabels": ["minor"]
+			"addLabels": ["minor"],
+			"matchPackageNames": ["*"]
 		},
 		{
-			"matchPackagePatterns": ["*"],
 			"matchUpdateTypes": ["major"],
 			"groupName": "major dependencies",
 			"groupSlug": "dependencies-major",
-			"addLabels": ["major"]
+			"addLabels": ["major"],
+			"matchPackageNames": ["*"]
 		}
 	]
 }
