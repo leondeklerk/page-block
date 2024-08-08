@@ -44,6 +44,7 @@
 					>
 						<option value="h">H - Hour</option>
 						<option value="d">D - Day</option>
+						<option value="w">W - Week</option>
 					</select>
 				</label>
 				<label class="block mt-2">
@@ -103,7 +104,7 @@ const storedData: Ref<Record<string, BlockEntry>> = ref({});
 const loading = ref(true);
 const allowClear = ref(false);
 
-const interval = ref<"h" | "d">("h");
+const interval = ref<"h" | "d" | "w">("h");
 const limit = ref(1);
 
 const validationError = ref("");
@@ -115,7 +116,7 @@ const blockedSites = computed(() => {
 type BlockEntry = {
 	opened: number;
 	limit: number;
-	interval: "h" | "d";
+	interval: "h" | "d" | "w";
 	lastOpenedOnAt: number | null;
 };
 
@@ -125,8 +126,8 @@ onMounted(() => {
 	browser.tabs
 		.query({ active: true, currentWindow: true })
 		.then((tabs) => {
-			let currentTab = tabs[0];
-			if (currentTab && currentTab.url && currentTab.url.startsWith("http")) {
+			const currentTab = tabs[0];
+			if (currentTab?.url?.startsWith("http")) {
 				model.value = new URL(currentTab.url).hostname;
 			}
 		})
@@ -162,8 +163,8 @@ async function listStorage() {
 	loading.value = false;
 }
 
-async function setInStorage(key: string, opened: number, limit: number, interval: "h" | "d") {
-	let data: Record<string, BlockEntry> = {};
+async function setInStorage(key: string, opened: number, limit: number, interval: "h" | "d" | "w") {
+	const data: Record<string, BlockEntry> = {};
 	data[key] = {
 		opened,
 		limit,

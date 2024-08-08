@@ -1,60 +1,73 @@
-const lastVisitedHostnames = {};
+const tabDomains = {};
+const pending = {};
 
 // eslint-disable-next-line no-undef
-browser.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
-	if (changeInfo.status && changeInfo.status === "complete" && tab.url.startsWith("http")) {
+browser.tabs.onCreated.addListener((tab) => {
+	tabDomains[tab.id] = "";
+});
+
+// eslint-disable-next-line no-undef
+browser.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
+	if (tab.url && tab.url.startsWith("https")) {
 		const currentHostname = new URL(tab.url).hostname;
 
-		if (lastVisitedHostnames[tabId] && lastVisitedHostnames[tabId] === currentHostname) {
-			return; // Do not proceed further as it's not considered a new navigation
+		if (tabDomains[tabId] !== currentHostname) {
+			if (pending[tabId]) {
+				return;
+			}
+			pending[tabId] = true;
+			const result = await checkIfTabAllowed(tab.url, tabId);
+			if (result) {
+				tabDomains[tabId] = currentHostname;
+			}
+			pending[tabId] = false;
 		}
-
-		lastVisitedHostnames[tabId] = currentHostname;
-		checkIfTabAllowed(tab.url, tab.id);
 	}
 });
 
 // eslint-disable-next-line no-undef
 browser.tabs.onRemoved.addListener((tabId) => {
-	delete lastVisitedHostnames[tabId];
+	delete tabDomains[tabId];
+	delete pending[tabId];
 });
 
-function checkIfTabAllowed(url, tabId) {
+async function checkIfTabAllowed(url, tabId) {
 	const hostname = new URL(url).hostname;
 	// eslint-disable-next-line no-undef
-	browser.storage.local.get(hostname).then((data) => {
-		if (data) {
-			const siteData = data[hostname];
+	const data = await browser.storage.local.get(hostname);
 
-			if (!siteData) {
-				return;
-			}
+	if (data) {
+		const siteData = data[hostname];
 
-			const interval = siteData.interval;
+		if (!siteData) {
+			return true;
+		}
 
-			// If it was opened at some point
-			if (siteData.lastOpenedOnAt) {
-				const now = new Date(Date.now());
-				const lastOpenedOnAt = new Date(siteData.lastOpenedOnAt);
+		const interval = siteData.interval;
 
-				// Reset if the last opened time was already outside an interval
-				if (isInInterval(now, lastOpenedOnAt, interval)) {
-					siteData.opened = 0;
-				} else {
-					// If it is in the interval check if its within limits
-					if (siteData.opened >= siteData.limit) {
-						closeTab(tabId);
-						return;
-					}
+		// If it was opened at some point
+		if (siteData.lastOpenedOnAt) {
+			const now = new Date(Date.now());
+			const lastOpenedOnAt = new Date(siteData.lastOpenedOnAt);
+
+			// Reset if the last opened time was already outside an interval
+			if (isInInterval(now, lastOpenedOnAt, interval)) {
+				siteData.opened = 0;
+			} else {
+				// If it is in the interval check if its within limits
+				if (siteData.opened >= siteData.limit) {
+					await closeTab(tabId);
+					return false;
 				}
 			}
-
-			siteData.opened++;
-			siteData.lastOpenedOnAt = Date.now();
-			// eslint-disable-next-line no-undef
-			browser.storage.local.set(data);
 		}
-	});
+
+		siteData.opened++;
+		siteData.lastOpenedOnAt = Date.now();
+		// eslint-disable-next-line no-undef
+		await browser.storage.local.set(data);
+	}
+	return true;
 }
 
 // Determine if the current time is inside the interval (last opened + interval)
@@ -62,12 +75,14 @@ function isInInterval(now, lastOpenedOnAt, interval) {
 	if (interval === "h") {
 		return lastOpenedOnAt.setHours(lastOpenedOnAt.getHours() + 1) < now;
 	} else if (interval === "d") {
-		return lastOpenedOnAt.setHours(lastOpenedOnAt.getHours() + 24) < now;
+		return lastOpenedOnAt.setDate(lastOpenedOnAt.getDate() + 1) < now;
+	} else if (interval === "w") {
+		return lastOpenedOnAt.setDate(lastOpenedOnAt.getDate() + 7) < now;
 	}
 	return true;
 }
 
-function closeTab(tabId) {
+async function closeTab(tabId) {
 	// eslint-disable-next-line no-undef
-	browser.tabs.remove(tabId);
+	await browser.tabs.remove(tabId);
 }

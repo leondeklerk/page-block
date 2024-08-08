@@ -1,6 +1,5 @@
 {
 	"manifest_version": 2,
-	"$schema": "https://json.schemastore.org/chrome-manifest.json",
 	"name": "Page Block",
 	"version": "1.0.2",
 	"author": "Leon de Klerk",

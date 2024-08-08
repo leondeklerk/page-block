@@ -1,14 +1,4 @@
-# Vue 3 template
+# Page block
 
-A vue 3 template repository configured with the following dependencies:
-
--   Vite
--   Typescript
--   Eslint + Prettier
--   Pinia
--   Vue Router
--   Tailwindcss
--   Fontawesome (free)
--   husky (pre-commit lint/type-check)
--   Renovate
--   Lint/build action
+A simple extension that allows you to set a list of websites which you can only visit x times in an interval.
+You can chose a hourly or daily interval, when the limit is reached within that interval the tab will automatically close.
