@@ -131,7 +131,7 @@ onMounted(() => {
 				model.value = new URL(currentTab.url).hostname;
 			}
 		})
-		// eslint-disable-next-line no-console
+
 		.catch((err) => console.error(err));
 });
 

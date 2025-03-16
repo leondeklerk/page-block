@@ -1,12 +1,10 @@
 const tabDomains = {};
 const pending = {};
 
-// eslint-disable-next-line no-undef
 browser.tabs.onCreated.addListener((tab) => {
 	tabDomains[tab.id] = "";
 });
 
-// eslint-disable-next-line no-undef
 browser.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
 	if (tab.url && tab.url.startsWith("https")) {
 		const currentHostname = new URL(tab.url).hostname;
@@ -25,7 +23,6 @@ browser.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
 	}
 });
 
-// eslint-disable-next-line no-undef
 browser.tabs.onRemoved.addListener((tabId) => {
 	delete tabDomains[tabId];
 	delete pending[tabId];
@@ -33,7 +30,7 @@ browser.tabs.onRemoved.addListener((tabId) => {
 
 async function checkIfTabAllowed(url, tabId) {
 	const hostname = new URL(url).hostname;
-	// eslint-disable-next-line no-undef
+
 	const data = await browser.storage.local.get(hostname);
 
 	if (data) {
@@ -64,7 +61,7 @@ async function checkIfTabAllowed(url, tabId) {
 
 		siteData.opened++;
 		siteData.lastOpenedOnAt = Date.now();
-		// eslint-disable-next-line no-undef
+
 		await browser.storage.local.set(data);
 	}
 	return true;
@@ -83,6 +80,5 @@ function isInInterval(now, lastOpenedOnAt, interval) {
 }
 
 async function closeTab(tabId) {
-	// eslint-disable-next-line no-undef
 	await browser.tabs.remove(tabId);
 }

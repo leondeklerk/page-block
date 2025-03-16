@@ -1,7 +1,8 @@
-@import './base.css';
-@import "/node_modules/@fortawesome/fontawesome-free/css/fontawesome.css";
-@import "/node_modules/@fortawesome/fontawesome-free/css/brands.css";
-@import "/node_modules/@fortawesome/fontawesome-free/css/solid.css";
+@import "@fortawesome/fontawesome-free/css/fontawesome.css" layer(vendor);
+@import "@fortawesome/fontawesome-free/css/brands.css" layer(vendor);
+@import "@fortawesome/fontawesome-free/css/solid.css" layer(vendor);
+
+@import "./base.css";
 
 #app {
     max-width: 1280px;
