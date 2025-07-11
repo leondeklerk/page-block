@@ -22,7 +22,7 @@
 		"@fortawesome/fontawesome-free": "6.7.2",
 		"vue": "3.5.17",
 		"xss": "1.0.15",
-		"zod": "3.25.67"
+		"zod": "4.0.5"
 	},
 	"devDependencies": {
 		"@tailwindcss/forms": "0.5.10",
