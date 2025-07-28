@@ -15,7 +15,7 @@
 					class="flex flex-row p-1"
 				>
 					<div class="flex-grow">{{ url }}</div>
-					<div class="basis-1/6 ml-2 text-center">{{ storedData[url].interval }}</div>
+					<div class="basis-1/6 ml-2 text-center">{{ intervalListText(url) }}</div>
 					<div class="basis-1/12 ml-2 text-center">{{ storedData[url].limit }}</div>
 					<div
 						class="basis-1/12 ml-2 text-[0.6rem] flex items-center justify-center justify-items-center cursor-pointer"
@@ -37,7 +37,18 @@
 					/>
 				</label>
 				<label class="block mt-2">
-					<span class="">Interval (allow limit every interval)</span>
+					<span class="">Multiplier</span>
+					<input
+						v-model="multiplier"
+						type="number"
+						class="dark:bg-gray-700 input[type='number'] mt-1 block w-full rounded-md dark:border-gray-700 border-gray-300 shadow-sm [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+						placeholder=""
+						step="1"
+					/>
+					<p class="text-red-600 text-sm">{{ multiplierValidationError }}</p>
+				</label>
+				<label class="block mt-2">
+					<span class="">Interval</span>
 					<select
 						v-model="interval"
 						class="dark:bg-gray-700 block w-full mt-1 rounded-md dark:border-gray-700 border-gray-300 shadow-sm"
@@ -56,8 +67,11 @@
 						placeholder=""
 						step="1"
 					/>
-					<p class="text-red-600 text-sm">{{ validationError }}</p>
+					<p class="text-red-600 text-sm">{{ limitValidationError }}</p>
 				</label>
+
+				<div class="text-center pt-2">{{ outputText }}</div>
+
 				<button
 					class="mt-4 transition-all w-full rounded-lg shadow-lg p-2 bg-emerald-500 hover:bg-emerald-600 dark:text-black"
 					type="button"
@@ -99,6 +113,7 @@
 import { computed, onMounted, ref, watch, type Ref } from "vue";
 import { z } from "zod";
 import xss from "xss";
+
 const model = defineModel<string>();
 const storedData: Ref<Record<string, BlockEntry>> = ref({});
 const loading = ref(true);
@@ -106,8 +121,10 @@ const allowClear = ref(false);
 
 const interval = ref<"h" | "d" | "w">("h");
 const limit = ref(1);
+const multiplier = ref(1);
 
-const validationError = ref("");
+const limitValidationError = ref("");
+const multiplierValidationError = ref("");
 
 const blockedSites = computed(() => {
 	return Object.keys(storedData.value);
@@ -116,6 +133,7 @@ const blockedSites = computed(() => {
 type BlockEntry = {
 	opened: number;
 	limit: number;
+	multiplier?: number;
 	interval: "h" | "d" | "w";
 	lastOpenedOnAt: number | null;
 };
@@ -139,37 +157,79 @@ watch(limit, () => {
 	validate();
 });
 
+const outputText = computed(() => {
+	if (model.value && limit.value && multiplier.value && interval.value && validate()) {
+		const timesText = limit.value > 1 ? "times" : "time";
+		const intervalTextSingular = interval.value === "h" ? "hour" : interval.value === "d" ? "day" : "week";
+		const intervalTextPlural = interval.value === "h" ? "hours" : interval.value === "d" ? "days" : "weeks";
+		const intervalText = multiplier.value > 1 ? intervalTextPlural : intervalTextSingular;
+		return `Allow ${model.value} ${limit.value} ${timesText} in ${multiplier.value} ${intervalText}`;
+	}
+	return "-";
+});
+
 function validate() {
-	const value = Number(xss(limit.value.toString()));
-	limit.value = value;
-	const result = z.number({ message: "Please enter a valid number" }).safeParse(value);
-	if (!result.success) {
-		validationError.value = result.error.format()._errors[0];
+	const limitValue = Number(xss(limit.value.toString()));
+	limit.value = limitValue;
+	const limitResult = z.number({ message: "Please enter a valid number" }).safeParse(limitValue);
+
+	const multiplierValue = Number(xss(multiplier.value.toString()));
+	multiplier.value = multiplierValue;
+	const multiplierResult = z
+		.number({ message: "Please enter a valid number" })
+		.min(1, {
+			error: "Multiplier must be at least 1",
+		})
+		.safeParse(multiplierValue);
+
+	let error = false;
+
+	if (!limitResult.success) {
+		limitValidationError.value = limitResult.error.format()._errors[0];
+		error = true;
+	}
+
+	if (!multiplierResult.success) {
+		multiplierValidationError.value = multiplierResult.error.format()._errors[0];
+		error = true;
+	}
+	if (error) {
 		return false;
 	}
-	validationError.value = "";
+
+	limitValidationError.value = "";
+	multiplierValidationError.value = "";
 	return true;
 }
 
 async function addBlocked() {
 	if (model.value && validate()) {
-		await setInStorage(model.value, 0, limit.value, interval.value);
+		await setInStorage(model.value, 1, limit.value, interval.value, multiplier.value);
 		await listStorage();
 	}
 }
 
 async function listStorage() {
 	storedData.value = await browser.storage.local.get();
+
+	if (model.value && storedData.value[model.value]) {
+		const entry = storedData.value[model.value];
+		interval.value = entry.interval;
+		limit.value = entry.limit;
+		multiplier.value = entry.multiplier || 1;
+	}
+
 	loading.value = false;
 }
 
-async function setInStorage(key: string, opened: number, limit: number, interval: "h" | "d" | "w") {
+async function setInStorage(key: string, opened: number, limit: number, interval: "h" | "d" | "w", multiplier: number) {
 	const data: Record<string, BlockEntry> = {};
 	data[key] = {
 		opened,
 		limit,
 		interval,
-		lastOpenedOnAt: null,
+		multiplier,
+		lastOpenedOnAt: Date.now(),
 	};
 	await browser.storage.local.set(data);
 }
@@ -185,5 +245,13 @@ async function clear() {
 	}
 	await browser.storage.local.clear();
 	await listStorage();
+}
+
+function intervalListText(url: string) {
+	if (storedData.value[url]) {
+		const entry = storedData.value[url];
+		return `${entry.multiplier || 1} ${entry.interval}`;
+	}
+	return "-";
 }
 </script>

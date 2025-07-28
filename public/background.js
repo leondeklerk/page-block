@@ -48,7 +48,7 @@ async function checkIfTabAllowed(url, tabId) {
 			const lastOpenedOnAt = new Date(siteData.lastOpenedOnAt);
 
 			// Reset if the last opened time was already outside an interval
-			if (isInInterval(now, lastOpenedOnAt, interval)) {
+			if (isInInterval(now, lastOpenedOnAt, interval, siteData.multiplier)) {
 				siteData.opened = 0;
 			} else {
 				// If it is in the interval check if its within limits
@@ -68,13 +68,13 @@ async function checkIfTabAllowed(url, tabId) {
 }
 
 // Determine if the current time is inside the interval (last opened + interval)
-function isInInterval(now, lastOpenedOnAt, interval) {
+function isInInterval(now, lastOpenedOnAt, interval, multiplier = 1) {
 	if (interval === "h") {
-		return lastOpenedOnAt.setHours(lastOpenedOnAt.getHours() + 1) < now;
+		return lastOpenedOnAt.setHours(lastOpenedOnAt.getHours() + multiplier) < now;
 	} else if (interval === "d") {
-		return lastOpenedOnAt.setDate(lastOpenedOnAt.getDate() + 1) < now;
+		return lastOpenedOnAt.setDate(lastOpenedOnAt.getDate() + multiplier) < now;
 	} else if (interval === "w") {
-		return lastOpenedOnAt.setDate(lastOpenedOnAt.getDate() + 7) < now;
+		return lastOpenedOnAt.setDate(lastOpenedOnAt.getDate() + 7 * multiplier) < now;
 	}
 	return true;
 }
