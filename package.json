@@ -24,6 +24,11 @@
 		"xss": "1.0.15",
 		"zod": "4.0.10"
 	},
+	"optionalDependencies": {
+		"@rollup/rollup-linux-x64-gnu": "4.46.1",
+		"@tailwindcss/oxide-linux-x64-gnu": "4.1.11",
+		"lightningcss-linux-x64-gnu": "1.30.1"
+	},
 	"devDependencies": {
 		"@tailwindcss/forms": "0.5.10",
 		"@tailwindcss/vite": "4.1.11",
