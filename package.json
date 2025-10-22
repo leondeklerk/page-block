@@ -33,7 +33,7 @@
 		"@tailwindcss/forms": "0.5.10",
 		"@tailwindcss/vite": "4.1.11",
 		"@tsconfig/node22": "22.0.2",
-		"@types/firefox-webext-browser": "120.0.4",
+		"@types/firefox-webext-browser": "143.0.0",
 		"@types/node": "22.16.5",
 		"@vitejs/plugin-vue": "6.0.1",
 		"@vue/eslint-config-prettier": "10.2.0",
