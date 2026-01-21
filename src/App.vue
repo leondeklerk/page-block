@@ -4,7 +4,7 @@
 		<div v-else>
 			<div class="flex flex-col dark:text-gray-200">
 				<div class="flex flex-row border-b-2 dark:border-gray-700 p-1">
-					<div class="flex-grow">Site</div>
+					<div class="grow">Site</div>
 					<div class="basis-1/6 ml-2">Interval</div>
 					<div class="basis-1/12 ml-2">Limit</div>
 					<div class="basis-1/12 ml-2"></div>
@@ -14,9 +14,9 @@
 					:key="url"
 					class="flex flex-row p-1"
 				>
-					<div class="flex-grow">{{ url }}</div>
+					<div class="grow">{{ url }}</div>
 					<div class="basis-1/6 ml-2 text-center">{{ intervalListText(url) }}</div>
-					<div class="basis-1/12 ml-2 text-center">{{ storedData[url].limit }}</div>
+					<div class="basis-1/12 ml-2 text-center">{{ storedData[url]?.limit }}</div>
 					<div
 						class="basis-1/12 ml-2 text-[0.6rem] flex items-center justify-center justify-items-center cursor-pointer"
 						@click="deleteFromStorage(url)"
@@ -185,12 +185,12 @@ function validate() {
 	let error = false;
 
 	if (!limitResult.success) {
-		limitValidationError.value = limitResult.error.format()._errors[0];
+		limitValidationError.value = limitResult.error.format()._errors[0] ?? "";
 		error = true;
 	}
 
 	if (!multiplierResult.success) {
-		multiplierValidationError.value = multiplierResult.error.format()._errors[0];
+		multiplierValidationError.value = multiplierResult.error.format()._errors[0] ?? "";
 		error = true;
 	}
 	if (error) {
@@ -212,8 +212,14 @@ async function addBlocked() {
 async function listStorage() {
 	storedData.value = await browser.storage.local.get();
 
-	if (model.value && storedData.value[model.value]) {
-		const entry = storedData.value[model.value];
+	if (!model.value) {
+		loading.value = false;
+		return;
+	}
+
+	const entry = storedData.value[model.value];
+
+	if (entry) {
 		interval.value = entry.interval;
 		limit.value = entry.limit;
 		multiplier.value = entry.multiplier || 1;
