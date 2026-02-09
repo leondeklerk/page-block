@@ -20,12 +20,12 @@
 	},
 	"dependencies": {
 		"@fortawesome/fontawesome-free": "7.1.0",
-		"vue": "3.5.27",
+		"vue": "3.5.28",
 		"xss": "1.0.15",
-		"zod": "4.3.5"
+		"zod": "4.3.6"
 	},
 	"optionalDependencies": {
-		"@rollup/rollup-linux-x64-gnu": "4.55.3",
+		"@rollup/rollup-linux-x64-gnu": "4.57.1",
 		"@tailwindcss/oxide-linux-x64-gnu": "4.1.18",
 		"lightningcss-linux-x64-gnu": "1.31.1"
 	},
@@ -34,8 +34,8 @@
 		"@tailwindcss/vite": "4.1.18",
 		"@tsconfig/node24": "24.0.4",
 		"@types/firefox-webext-browser": "143.0.0",
-		"@types/node": "24.10.9",
-		"@vitejs/plugin-vue": "6.0.3",
+		"@types/node": "24.10.12",
+		"@vitejs/plugin-vue": "6.0.4",
 		"@vue/eslint-config-prettier": "10.2.0",
 		"@vue/eslint-config-typescript": "14.6.0",
 		"@vue/tsconfig": "0.8.1",
@@ -47,7 +47,7 @@
 		"tailwindcss": "4.1.18",
 		"typescript": "5.9.3",
 		"vite": "7.3.1",
-		"vite-plugin-vue-devtools": "8.0.5",
-		"vue-tsc": "3.2.2"
+		"vite-plugin-vue-devtools": "8.0.6",
+		"vue-tsc": "3.2.4"
 	}
 }
