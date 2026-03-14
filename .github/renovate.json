@@ -45,20 +45,6 @@
 			"enabled": true
 		},
 		{
-			"description": "Security patches",
-			"matchUpdateTypes": [
-				"patch",
-				"minor"
-			],
-			"matchVulnerabilitySeverity": [
-				"critical",
-				"high",
-				"moderate"
-			],
-			"automerge": true,
-			"platformAutomerge": true
-		},
-		{
 			"description": "Major dependencies",
 			"matchUpdateTypes": [
 				"major"
