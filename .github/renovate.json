@@ -1,34 +1,70 @@
 {
-	"extends": ["config:recommended", ":rebaseStalePrs", ":pinVersions"],
-	"labels": ["renovate"],
-	"rollbackPrs": true,
-	"dependencyDashboard": false,
-	"assignees": ["developer@leondeklerk.com"],
-	"configMigration": true,
+	"$schema": "https://docs.renovatebot.com/renovate-schema.json",
+	"extends": [
+		"config:recommended",
+		":configMigration",
+		":pinDevDependencies",
+		"abandonments:recommended",
+		"security:minimumReleaseAgeNpm",
+		":maintainLockFilesWeekly"
+	],
 	"timezone": "Europe/Amsterdam",
-	"vulnerabilityAlerts": {
-		"groupName": null,
-		"enabled": true,
-		"labels": ["security"],
-		"schedule": "at any time"
-	},
-	"digest": {
-		"enabled": false
-	},
+	"dependencyDashboard": false,
+	"labels": [
+		"renovate"
+	],
+	"assignees": [
+		"developer@leondeklerk.com"
+	],
+	"schedule": [
+		"before 5am on Monday"
+	],
 	"packageRules": [
 		{
-			"matchUpdateTypes": ["minor", "patch"],
-			"groupName": "minor dependencies",
-			"groupSlug": "dependencies-minor",
-			"addLabels": ["minor"],
-			"matchPackageNames": ["*"]
+			"description": "Non-major dependencies",
+			"matchUpdateTypes": [
+				"minor",
+				"patch",
+				"pin"
+			],
+			"automerge": true,
+			"platformAutomerge": true,
+			"groupName": "Non-major updates",
+			"groupSlug": "non-major-updates",
+			"enabled": true
 		},
 		{
-			"matchUpdateTypes": ["major"],
-			"groupName": "major dependencies",
-			"groupSlug": "dependencies-major",
-			"addLabels": ["major"],
-			"matchPackageNames": ["*"]
+			"description": "Lock file maintenance",
+			"matchUpdateTypes": [
+				"lockFileMaintenance"
+			],
+			"automerge": true,
+			"platformAutomerge": true,
+			"groupName": "Lock file maintenance",
+			"groupSlug": "lock-file-maintenance",
+			"enabled": true
+		},
+		{
+			"description": "Security patches",
+			"matchUpdateTypes": [
+				"patch",
+				"minor"
+			],
+			"matchVulnerabilitySeverity": [
+				"critical",
+				"high",
+				"moderate"
+			],
+			"automerge": true,
+			"platformAutomerge": true
+		},
+		{
+			"description": "Major dependencies",
+			"matchUpdateTypes": [
+				"major"
+			],
+			"groupName": "Major dependencies",
+			"groupSlug": "major"
 		}
 	]
 }
