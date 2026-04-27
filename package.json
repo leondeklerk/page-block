@@ -20,18 +20,18 @@
 	},
 	"dependencies": {
 		"@fortawesome/fontawesome-free": "7.2.0",
-		"vue": "3.5.32",
+		"vue": "3.5.33",
 		"xss": "1.0.15",
 		"zod": "4.3.6"
 	},
 	"optionalDependencies": {
-		"@rollup/rollup-linux-x64-gnu": "4.60.1",
-		"@tailwindcss/oxide-linux-x64-gnu": "4.2.2",
+		"@rollup/rollup-linux-x64-gnu": "4.60.2",
+		"@tailwindcss/oxide-linux-x64-gnu": "4.2.4",
 		"lightningcss-linux-x64-gnu": "1.32.0"
 	},
 	"devDependencies": {
 		"@tailwindcss/forms": "0.5.11",
-		"@tailwindcss/vite": "4.2.2",
+		"@tailwindcss/vite": "4.2.4",
 		"@tsconfig/node24": "24.0.4",
 		"@types/firefox-webext-browser": "143.0.0",
 		"@types/node": "24.12.2",
@@ -39,15 +39,15 @@
 		"@vue/eslint-config-prettier": "10.2.0",
 		"@vue/eslint-config-typescript": "14.7.0",
 		"@vue/tsconfig": "0.9.1",
-		"eslint": "10.2.0",
-		"eslint-plugin-vue": "10.8.0",
+		"eslint": "10.2.1",
+		"eslint-plugin-vue": "10.9.0",
 		"husky": "9.1.7",
 		"lint-staged": "16.4.0",
 		"prettier": "3.8.3",
-		"tailwindcss": "4.2.2",
+		"tailwindcss": "4.2.4",
 		"typescript": "5.9.3",
 		"vite": "7.3.2",
 		"vite-plugin-vue-devtools": "8.1.1",
-		"vue-tsc": "3.2.6"
+		"vue-tsc": "3.2.7"
 	}
 }
