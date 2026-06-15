@@ -20,7 +20,7 @@
 	},
 	"dependencies": {
 		"@fortawesome/fontawesome-free": "7.2.0",
-		"vue": "3.5.35",
+		"vue": "3.5.38",
 		"xss": "1.0.15",
 		"zod": "4.4.3"
 	},
@@ -34,7 +34,7 @@
 		"@tailwindcss/vite": "4.3.0",
 		"@tsconfig/node24": "24.0.4",
 		"@types/firefox-webext-browser": "143.0.0",
-		"@types/node": "24.13.0",
+		"@types/node": "24.13.2",
 		"@vitejs/plugin-vue": "6.0.7",
 		"@vue/eslint-config-prettier": "10.2.0",
 		"@vue/eslint-config-typescript": "14.8.0",
@@ -43,11 +43,11 @@
 		"eslint-plugin-vue": "10.9.2",
 		"husky": "9.1.7",
 		"lint-staged": "16.4.0",
-		"prettier": "3.8.3",
+		"prettier": "3.8.4",
 		"tailwindcss": "4.3.0",
 		"typescript": "5.9.3",
 		"vite": "7.3.5",
 		"vite-plugin-vue-devtools": "8.1.2",
-		"vue-tsc": "3.3.3"
+		"vue-tsc": "3.3.4"
 	}
 }
