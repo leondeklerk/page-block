@@ -19,35 +19,35 @@
 		"*.{js,ts,vue}": "eslint --max-warnings 0"
 	},
 	"dependencies": {
-		"@fortawesome/fontawesome-free": "7.3.0",
-		"vue": "3.5.39",
+		"@fortawesome/fontawesome-free": "7.3.1",
+		"vue": "3.5.40",
 		"xss": "1.0.15",
 		"zod": "4.4.3"
 	},
 	"optionalDependencies": {
 		"@rollup/rollup-linux-x64-gnu": "4.62.2",
-		"@tailwindcss/oxide-linux-x64-gnu": "4.3.2",
+		"@tailwindcss/oxide-linux-x64-gnu": "4.3.3",
 		"lightningcss-linux-x64-gnu": "1.32.0"
 	},
 	"devDependencies": {
 		"@tailwindcss/forms": "0.5.11",
-		"@tailwindcss/vite": "4.3.2",
+		"@tailwindcss/vite": "4.3.3",
 		"@tsconfig/node24": "24.0.4",
 		"@types/firefox-webext-browser": "143.0.0",
-		"@types/node": "24.13.2",
-		"@vitejs/plugin-vue": "6.0.7",
+		"@types/node": "24.13.3",
+		"@vitejs/plugin-vue": "6.0.8",
 		"@vue/eslint-config-prettier": "10.2.0",
 		"@vue/eslint-config-typescript": "14.9.0",
 		"@vue/tsconfig": "0.9.1",
-		"eslint": "10.6.0",
+		"eslint": "10.7.0",
 		"eslint-plugin-vue": "10.9.2",
 		"husky": "9.1.7",
 		"lint-staged": "16.4.0",
-		"prettier": "3.9.4",
-		"tailwindcss": "4.3.2",
+		"prettier": "3.9.5",
+		"tailwindcss": "4.3.3",
 		"typescript": "5.9.3",
 		"vite": "7.3.6",
 		"vite-plugin-vue-devtools": "8.1.5",
-		"vue-tsc": "3.3.6"
+		"vue-tsc": "3.3.7"
 	}
 }
