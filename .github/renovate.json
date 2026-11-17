@@ -9,24 +9,16 @@
 		":maintainLockFilesWeekly"
 	],
 	"timezone": "Europe/Amsterdam",
-	"dependencyDashboard": false,
-	"labels": [
-		"renovate"
-	],
-	"assignees": [
-		"developer@leondeklerk.com"
-	],
-	"schedule": [
-		"before 5am on Monday"
-	],
+	"dependencyDashboard": {
+		"enabled": false
+	},
+	"labels": ["renovate"],
+	"assignees": ["developer@leondeklerk.com"],
+	"schedule": ["before 5am on Monday"],
 	"packageRules": [
 		{
 			"description": "Non-major dependencies",
-			"matchUpdateTypes": [
-				"minor",
-				"patch",
-				"pin"
-			],
+			"matchUpdateTypes": ["minor", "patch", "pin"],
 			"automerge": true,
 			"platformAutomerge": true,
 			"groupName": "Non-major updates",
@@ -35,9 +27,7 @@
 		},
 		{
 			"description": "Lock file maintenance",
-			"matchUpdateTypes": [
-				"lockFileMaintenance"
-			],
+			"matchUpdateTypes": ["lockFileMaintenance"],
 			"automerge": true,
 			"platformAutomerge": true,
 			"groupName": "Lock file maintenance",
@@ -46,9 +36,7 @@
 		},
 		{
 			"description": "Major dependencies",
-			"matchUpdateTypes": [
-				"major"
-			],
+			"matchUpdateTypes": ["major"],
 			"groupName": "Major dependencies",
 			"groupSlug": "major"
 		}
